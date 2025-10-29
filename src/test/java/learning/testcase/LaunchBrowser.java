@@ -31,6 +31,8 @@ public class LaunchBrowser {
             page.goForward(new Page.GoForwardOptions().setTimeout(500));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
+
+            //28
         }
 
 
