@@ -1,11 +1,12 @@
 package learning.testcase;
 
 import com.microsoft.playwright.*;
+import com.microsoft.playwright.options.SelectOption;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LaunchBrowser {
+public class Wikipedia {
     public static void main(String[] args) {
         List<String> arguments = new ArrayList<>();
         arguments.add("--start-maximized");
@@ -23,16 +24,27 @@ public class LaunchBrowser {
              BrowserContext browserContext = browser.newContext(new Browser.NewContextOptions().setViewportSize(null));
              Page page = browserContext.newPage()) {
 
-            page.navigate("https://www.google.com");
-            Thread.sleep(2000);
-            page.navigate("https://javadoc.io/doc/com.microsoft.playwright/playwright/latest/index.html");
-            page.goBack(new Page.GoBackOptions().setTimeout(500));
-            Thread.sleep(1000);
-            page.goForward(new Page.GoForwardOptions().setTimeout(500));
+            page.navigate("https://www.wikipedia.org/");
+//            page.selectOption("#searchLanguage","mr");
+            page.selectOption("#searchLanguage", new SelectOption().setLabel("मराठी"));
+
+            Locator locator = page.locator("select > option");
+            int count = locator.count();
+            System.out.println(count);
+
+
+            for (int i = 0; i < locator.count(); i++) {
+                Locator nth = locator.nth(i);
+                String s = nth.innerText() + "-------------" + nth.getAttribute("lang");
+                System.out.println(s);
+            }
+
+
+
+            Thread.sleep(5000);
+
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 }
